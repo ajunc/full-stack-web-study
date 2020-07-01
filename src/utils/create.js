@@ -10,24 +10,39 @@ export default function create(Component, props) {
   // const Ctor = Vue.extend(Component)
   // const comp = new Ctor()
 
-  // 方式二：借鸡生蛋
-  const vm = new Vue({
-    render(h) {
-      return h(Component, { props })
-    }
-  }).$mount() // $mount()本质上将vdom=》dom
-
+  //方式一： extend
+  //暗号：村长喊你来板砖
+  const Ctor = Vue.extend(Component)
+  const comp = new Ctor({
+    propsData: props
+  }).$mount()
   // 通过vm.$el获取生成的dom
-  document.body.appendChild(vm.$el)
+  document.body.appendChild(comp.$el)
 
   // 删除函数
-  // 获取组件实例
-  const comp = vm.$children[0]
-
   comp.remove = () => {
-    document.body.removeChild(vm.$el)
-    vm.$destroy()
+    document.body.removeChild(comp.$el)
+    comp.$destroy()
   }
+
+  // 方式二：借鸡生蛋
+  // const vm = new Vue({
+  //   render(h) {
+  //     return h(Component, { props })
+  //   }
+  // }).$mount() // $mount()本质上将vdom=》dom
+
+  // // 通过vm.$el获取生成的dom
+  // document.body.appendChild(vm.$el)
+
+  // // 删除函数
+  // // 获取组件实例
+  // const comp = vm.$children[0]
+
+  // comp.remove = () => {
+  //   document.body.removeChild(vm.$el)
+  //   vm.$destroy()
+  // }
 
   return comp
 }
