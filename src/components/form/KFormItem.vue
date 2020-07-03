@@ -1,12 +1,8 @@
 <template>
   <div>
-    <!-- 显示label -->
-    <label v-if="label">{{label}}</label>
-    <!-- 显示内部表单元素 -->
+    <label>{{label}}</label>
     <slot></slot>
-    <!-- 错误提示信息 -->
-    <p v-if="error" class="error">{{error}}</p>
-    <!-- <p>{{form.rules[prop]}}</p> -->
+    <p class="error" v-if="error">{{error}}</p>
   </div>
 </template>
 
@@ -37,29 +33,32 @@ export default {
   },
   methods: {
     validate() {
-      // 当前表单项校验
-      // element使用的是async-validator
-      // 获取校验规则和当前数据
-      const rules = this.form.rules[this.prop]
-      const value = this.form.model[this.prop]
-      const schema = new Schema({[this.prop]: rules})
-      // 返回promise，全局可以统一处理
-      return schema.validate({[this.prop]: value}, errors => {
-        // errors存在则校验失败
+      // 执行校验
+      // 1.获取校验规则
+      const rules = this.form.rules[this.prop];
+      // 2.获取当前值
+      const value = this.form.model[this.prop];
+      // 3.创建校验器
+      const schema = new Schema({
+        // 计算属性
+        [this.prop]: rules
+      });
+      // 4.执行校验
+      return schema.validate({
+        [this.prop]: value
+      }, errors => {
         if (errors) {
+          // 显示错误信息
           this.error = errors[0].message
         } else {
-          // 校验通过
+          // 清空以前可能存在的错误
           this.error = ''
         }
-      })
+      });
     }
   }
 };
 </script>
 
-<style scoped>
-.error {
-  color: red;
-}
+<style lang="scss" scoped>
 </style>

@@ -1,15 +1,12 @@
 <template>
   <div>
-    <!-- 管理数据，实现双向绑定 -->
-    <!-- :value, @input -->
-    <input :type="type" :value="value" @input="onInput"
-      v-bind="$attrs">
+    <!-- 自定义组件双向绑定：@input,:value -->
+    <input :type="type" :value="value" @input="onInput">
   </div>
 </template>
 
 <script>
   export default {
-    inheritAttrs: false,
     props: {
       value: {
         type: String,
@@ -18,14 +15,15 @@
       type: {
         type: String,
         default: 'text'
-      }
+      },
     },
     methods: {
       onInput(e) {
         this.$emit('input', e.target.value)
 
-        // 触发校验
+        // 数据变化，需要执行校验
         this.$parent.$emit('validate')
+        // this.$dispatch('KFormItem', 'validate')
       }
     },
   }

@@ -1,15 +1,17 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <!-- $store是哪来的 -->
+    <p @click="$store.commit('add')">sync {{$store.state.counter}}</p>
+    <p @click="$store.dispatch('add')">async {{$store.state.counter}}</p>
     <!-- 组件通信 -->
     <!-- <Communication></Communication> -->
     <!-- 表单 -->
-    <FormExample></FormExample>
+    <!-- <FormExample></FormExample> -->
     <!-- 插槽 -->
     <!-- <SlotExample></SlotExample> -->
     <!-- 递归 -->
     <!-- <TreeExample></TreeExample> -->
-    
   </div>
 </template>
 
@@ -19,6 +21,7 @@ import FormExample from '@/components/form';
 import SlotExample from '@/components/slots';
 import TreeExample from '@/components/recursion';
 
+// 导出的是组件配置对象，它是一个普通js对象
 export default {
   name: 'HelloWorld',
   props: {
